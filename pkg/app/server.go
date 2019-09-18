@@ -3,20 +3,25 @@ package app
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
-// chared dependencies
 type Server struct {
-	port string
+	router http.ServeMux
+	port   int
+}
+
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.router.ServeHTTP(w, r)
 }
 
 func (s *Server) ListenAndServe() {
-	err := http.ListenAndServe(s.port, nil)
+	var err = http.ListenAndServe(fmt.Sprintf(":%s", strconv.Itoa(s.port)), s)
 	if err != nil {
 		fmt.Println("unable to launch http server due to error", err)
 	}
 }
 
-func NewServer(port string) Server {
-	return Server{port: port}
+func NewServer() Server {
+	return Server{port: 8080}
 }

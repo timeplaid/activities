@@ -3,7 +3,7 @@ package app
 import "net/http"
 
 func (s *Server) RegisterRoutes() {
-	http.HandleFunc("/", rootHandler())
+	s.router.HandleFunc("/", rootHandler())
 }
 
 func rootHandler() http.HandlerFunc {
